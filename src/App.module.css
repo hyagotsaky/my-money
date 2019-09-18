@@ -1,0 +1,129 @@
+.title {
+  font-family: Trueno;
+  font-weight: 200;
+  font-size: 26px;
+  color: #54575f;
+  border-bottom: solid #26c105 3px;
+  width: max-content;
+}
+
+.main {
+  padding-bottom: 20px;
+}
+
+.image {
+  width: 185px;
+  height: 100px;
+}
+
+.mainImg {
+  display: flex;
+  justify-content: center;
+  padding-top: 32px;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
+.imgLogo {
+  height: 100%;
+  width: 100%;
+}
+
+.mainLogin {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.input {
+  width: -webkit-fill-available;
+  height: 30px;
+  border-radius: 8px;
+  border: solid 1px gray;
+  padding: 13px 4px 4px 40px;
+  margin-bottom: 16px;
+}
+
+.button {
+  background-image: linear-gradient(-90deg, #76e35f, #26c105);
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 60px;
+}
+
+body {
+  font-family: Trueno;
+  background-color: #fcfefc;
+}
+
+.divInput {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+}
+
+.iconBlock {
+  position: absolute;
+  top: 9px;
+  left: 11px;
+  height: 24px;
+}
+
+.spanText {
+  position: absolute;
+  top: 5px;
+  left: 40px;
+  font-size: 12px;
+  color: gray;
+}
+
+.mainbackground {
+  background-image: linear-gradient(-90deg, #76e35f, #26c105);
+  height: 40px;
+  border-radius: 10px 10px 0 0;
+}
+
+.link {
+  font-weight: bold;
+  color: #26c105;
+  text-decoration: none;
+}
+
+.titleMain {
+  display: flex;
+  margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .image {
+    width: 300px;
+    height: 200px;
+  }
+
+  .imgLogo {
+    width: 380px;
+    height: 83px;
+  }
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
