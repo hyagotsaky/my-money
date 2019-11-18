@@ -60,9 +60,11 @@ function Dashboard() {
     return operations.map((operation, key) => {
       return (
         <div className={styles.operation} key={key}>
+          <div className={styles.cardSub}>
           <p> {operation.name} </p>
           <p> {operation.value} </p>
-          <p> Criado em {operation.createdAt} </p>
+          </div>
+          <p  className={styles.cardDate}> Criado em {operation.createdAt} </p>
         </div>
       )
     })
@@ -169,8 +171,10 @@ function Dashboard() {
       <p className={styles.operationsListTitle}>
         Lista de operações
       </p>
+      <div className={styles.cardMain}>
       <div className={styles.operationsList}>
-        {operationList()}
+        {operationList()} 
+      </div>
       </div>
     </>
   );

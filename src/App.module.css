@@ -1,3 +1,48 @@
+.welcome{
+  font-size: 15px;
+    font-family: auto;
+    color: white;
+    flex-direction: row-reverse;
+    position: relative;
+    top: -39px;
+    padding-left: 15px;
+}
+
+.logOut{
+  display: flex;
+    flex-flow: column;
+    position: absolute;
+    top: 3px;
+    right: 13px;
+}
+
+.operation{
+
+  background-image: linear-gradient(-90deg, #76e35f, #26c105);
+  border-radius: 18px;
+  margin: 10px;
+  text-align: center;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: white;
+}
+
+.cardSub{
+  display: flex;
+  text-align: center;
+  padding-left: 20px; 
+}
+
+
+.cardDate{
+  display: flex;
+  padding-left: 20px;
+}
+.cardMain{
+  background-color: white;
+}
+
+
 .title {
   font-family: Trueno;
   font-weight: 200;
