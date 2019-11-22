@@ -28,18 +28,25 @@
 }
 
 .cardSub{
-  display: flex;
+
   text-align: center;
-  padding-left: 20px; 
+
+}
+
+.cardName{
+  padding-right: 10px;
 }
 
 
-.cardDate{
-  display: flex;
-  padding-left: 20px;
-}
 .cardMain{
   background-color: white;
+}
+
+.operationsListTitle{
+  border-bottom: solid 1px;
+    text-align: center;
+    margin: 10px;
+
 }
 
 
@@ -165,7 +172,25 @@ body {
   margin: 0;
 }
 
+.cardRed{
+  background-color: red ;
+}
+
+.cardGreen{
+  background-color: green;
+}
+
 @media screen and (min-width: 768px) {
+
+ .operationsList{
+  display: flex;
+  flex-wrap: wrap;
+ }
+
+ .operation{
+  width: 46%;
+ }
+
   .image {
     width: 300px;
     height: 200px;
@@ -174,6 +199,10 @@ body {
   .imgLogo {
     width: 380px;
     height: 83px;
+  }
+
+  .operationsListTitle{
+    font-size: 20px;
   }
 }
 
@@ -189,3 +218,14 @@ body {
   width: 100%;
   display: block;
 }
+
+
+@media screen and (min-width: 1024px) {
+
+
+  .operation{
+    font-size: 30px;
+  }
+
+}
+

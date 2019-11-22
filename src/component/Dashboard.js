@@ -30,8 +30,12 @@ function Dashboard() {
     await operations.forEach(operation => {
       if (operation.type === 'entrada') {
         computedValue += Number(operation.value)
+        var element = document.getElementById("card");
+        element.classList.add("cardGreen");
       } else {
         computedValue -= Number(operation.value)
+        var element = document.getElementById("card" );
+        element.classList.add("cardRed");
       }
     });
     setCurrentValue(computedValue);
@@ -56,15 +60,15 @@ function Dashboard() {
     setUser({});
   }
 
-  function operationList() {
+  function operationList() { 
     return operations.map((operation, key) => {
       return (
         <div className={styles.operation} key={key}>
           <div className={styles.cardSub}>
-          <p> {operation.name} </p>
-          <p> {operation.value} </p>
+          <p className={styles.cardName}> {operation.name} </p>
+          <p id="card" className={styles.cardGreen}>no valor de R${operation.value} </p>
           </div>
-          <p  className={styles.cardDate}> Criado em {operation.createdAt} </p>
+          <p  className={styles.cardDate}>  {operation.createdAt} </p>
         </div>
       )
     })
@@ -176,6 +180,9 @@ function Dashboard() {
         {operationList()} 
       </div>
       </div>
+
+      
+      
     </>
   );
 };
