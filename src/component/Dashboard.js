@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt, faList, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 import { Redirect } from 'react-router-dom';
 import { getOperations, createOperation } from '../services/api';
+import grafico12 from "../images/grafico12.gif";
+import setaGreen from "../images/setaGreen.gif";
 function Dashboard() {
   const [user, setUser] = useState({});
   const [operations, setOperations] = useState([]);
@@ -112,6 +114,8 @@ function Dashboard() {
       </div>
       <div className={styles.logOut} onClick={signOut}>
         <FontAwesomeIcon icon={faSignOutAlt} />
+        
+      <img  className={styles.sair} src={setaGreen} alt="w"></img>
         Sair
       </div>
       <div className={styles.insertOperation}>
@@ -175,6 +179,10 @@ function Dashboard() {
       <p className={styles.operationsListTitle}>
         Lista de operações
       </p>
+      <div  className={styles.divGrafico}>
+
+      <img  className={styles.imgGrafico} src={grafico12} alt="w"></img>
+      </div>
       <div className={styles.cardMain}>
       <div className={styles.operationsList}>
         {operationList()} 

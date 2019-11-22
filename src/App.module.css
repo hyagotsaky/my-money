@@ -8,6 +8,16 @@
     padding-left: 15px;
 }
 
+.imgGrafico{
+  height: 100px;
+  width: 100px; 
+
+}
+
+.divGrafico{
+  text-align: center;
+}
+
 .logOut{
   display: flex;
     flex-flow: column;
@@ -47,6 +57,19 @@
     text-align: center;
     margin: 10px;
 
+}
+
+.sair{
+  height: 44px;
+  width: 50px;
+  position: absolute;
+  right: -15px;
+  top: -6px;
+  cursor: pointer;
+}
+
+.insertOperation{
+  text-align: center;
 }
 
 
@@ -182,6 +205,33 @@ body {
 
 @media screen and (min-width: 768px) {
 
+
+  .welcome{
+    font-size: 22px;
+    font-weight: 800;
+    top: -59px;
+  }
+
+  .cardName{
+    font-size: 30px;
+  }
+  
+.imgGrafico{
+  height: 500px;
+  width: 500px; 
+
+}
+.mainbackground {
+
+  height: 80px;
+
+}
+
+.sair{
+  height: 88px;
+  width: 100px;
+}
+
  .operationsList{
   display: flex;
   flex-wrap: wrap;
@@ -218,6 +268,8 @@ body {
   width: 100%;
   display: block;
 }
+
+
 
 
 @media screen and (min-width: 1024px) {
