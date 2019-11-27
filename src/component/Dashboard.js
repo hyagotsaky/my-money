@@ -1,17 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '../App.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faList, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faList, faDollarSign, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Redirect } from 'react-router-dom';
-import { getOperations, createOperation } from '../services/api';
+import { getOperations, createOperation, deleteOperation } from '../services/api';
 import grafico12 from "../images/grafico12.gif";
 import setaGreen from "../images/setaGreen.gif";
+import * as moment from 'moment';
+import cx from 'classnames';
+import CurrencyFormat from 'react-currency-format';
+import { XYPlot, RadialChart } from 'react-vis';
 function Dashboard() {
   const [user, setUser] = useState({});
   const [operations, setOperations] = useState([]);
   const [errors, setErrors] = useState([]);
   const [currentValue, setCurrentValue] = useState(0);
-
+  const [chartData, setChartData] = useState([
+    {
+      angle: 0,
+      radius: 1,
+      color: '#eb0000'
+    },
+    {
+      angle: 0,
+      radius: 1,
+      color: '#61DA47'
+    }
+  ])
+  const [values, setValues] = useState({ positive: 0, negative: 0 })
   const descriptionRef = useRef();
   const valueRef = useRef();
   const typeRef = useRef();
@@ -25,19 +41,39 @@ function Dashboard() {
 
   useEffect(() => {
     calculateCurrentValue();
+    if (operations.length) {
+
+      const totalValue = operations.reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }));
+      const positiveValue = operations.filter(op => op.type === 'entrada').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
+      const negativeValue = operations.filter(op => op.type === 'saida').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
+      const newChartData = [
+        {
+          angle: (negativeValue.value / totalValue.value) * 100,
+          radius: negativeValue.value / positiveValue.value, // controla tamanho da torta
+          color: '#eb0000'
+        },
+        {
+          angle: (positiveValue.value / totalValue.value) * 100,
+          radius: positiveValue.value / negativeValue.value,
+          color: '#61DA47'
+        }
+      ]
+      setValues({ positive: positiveValue.value, negative: negativeValue.value })
+      setChartData(newChartData)
+    }
   }, [operations]);
+
+  const myData = [
+
+  ]
 
   async function calculateCurrentValue() {
     let computedValue = user.initialValue;
     await operations.forEach(operation => {
       if (operation.type === 'entrada') {
         computedValue += Number(operation.value)
-        var element = document.getElementById("card");
-        element.classList.add("cardGreen");
       } else {
         computedValue -= Number(operation.value)
-        var element = document.getElementById("card" );
-        element.classList.add("cardRed");
       }
     });
     setCurrentValue(computedValue);
@@ -62,15 +98,39 @@ function Dashboard() {
     setUser({});
   }
 
-  function operationList() { 
+  const redCard = cx(
+    styles.operationBox,
+    styles.borderRed,
+  )
+
+  const greenCard = cx(
+    styles.operationBox,
+    styles.borderGreen,
+  )
+
+  async function handleDelete(id) {
+    const res = await deleteOperation(id);
+    if (res) {
+      reloadOperations();
+    }
+  }
+
+  function operationList() {
     return operations.map((operation, key) => {
       return (
-        <div className={styles.operation} key={key}>
-          <div className={styles.cardSub}>
-          <p className={styles.cardName}> {operation.name} </p>
-          <p id="card" className={styles.cardGreen}>no valor de R${operation.value} </p>
+        <div className={operation.type === 'entrada' ? greenCard : redCard} key={key}>
+          <div className={styles.dateWrapper}>
+            {operation.createdAt}
           </div>
-          <p  className={styles.cardDate}>  {operation.createdAt} </p>
+          <div className={styles.operationName}>
+            {operation.name}
+          </div>
+          <div className={styles.operationValue}>
+            <CurrencyFormat value={operation.value} displayType={'text'} thousandSeparator={true} prefix={'R$'} decimalSeparator={','} thousandSeparator={'.'} decimalScale={2} fixedDecimalScale />
+          </div>
+          <div className={styles.deleteButton} onClick={() => handleDelete(operation['_id']['$oid'])}>
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
         </div>
       )
     })
@@ -110,16 +170,37 @@ function Dashboard() {
     <>
       {renderRedirect()}
       <div className={styles.welcome}>
-        Olá,{user.name}. <br /> Seu saldo é de R$ {Number(currentValue).toFixed(2)} reais.
+        <FontAwesomeIcon icon={faUser} />
+        <span className={styles.userName}>
+          {user.name}
+        </span>
+        <CurrencyFormat value={currentValue} displayType={'text'} thousandSeparator={true} prefix={'R$'} decimalSeparator={','} thousandSeparator={'.'} decimalScale={2} fixedDecimalScale />
       </div>
       <div className={styles.logOut} onClick={signOut}>
         <FontAwesomeIcon icon={faSignOutAlt} />
-        
-      <img  className={styles.sair} src={setaGreen} alt="w"></img>
+        <img className={styles.sair} src={setaGreen} alt="w"></img>
         Sair
       </div>
+      <div className={styles.chartTitle}>
+        Resumo de operações
+      </div>
+      <div className={styles.chartWrapper}>
+        <div className={styles.chartInfoWrapper}>
+          <div className={styles.chartInfo}>
+            <div className={styles.redSquare} />
+            <CurrencyFormat value={values.negative} displayType={'text'} thousandSeparator={true} prefix={'R$'} decimalSeparator={','} thousandSeparator={'.'} decimalScale={2} fixedDecimalScale />
+          </div>
+          <div className={styles.chartInfo}>
+            <div className={styles.greenSquare} />
+            <CurrencyFormat value={values.positive} displayType={'text'} thousandSeparator={true} prefix={'R$'} decimalSeparator={','} thousandSeparator={'.'} decimalScale={2} fixedDecimalScale />
+          </div>
+        </div>
+        <RadialChart data={chartData} height={200} width={200} colorType="literal" />
+      </div>
+      <div className={styles.chartTitle}>
+        Inserir operação
+      </div>
       <div className={styles.insertOperation}>
-        <p> Inserir nova operação </p>
         <div className={styles.divInput}>
           <FontAwesomeIcon icon={faList} className={styles.iconBlock} />
           <span className={styles.spanText}>Descrição do item</span>
@@ -176,21 +257,17 @@ function Dashboard() {
         }
         <button className={styles.button} onClick={validate}>Cadastrar</button>
       </div>
-      <p className={styles.operationsListTitle}>
+      <div className={styles.chartTitle}>
         Lista de operações
-      </p>
-      <div  className={styles.divGrafico}>
-
-      <img  className={styles.imgGrafico} src={grafico12} alt="w"></img>
       </div>
       <div className={styles.cardMain}>
-      <div className={styles.operationsList}>
-        {operationList()} 
-      </div>
+        <div className={styles.operationsList}>
+          {operationList()}
+        </div>
       </div>
 
-      
-      
+
+
     </>
   );
 };

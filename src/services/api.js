@@ -60,9 +60,24 @@ const createOperation = (payload) => {
     })
 }
 
+const deleteOperation = (operation_id) => {
+  return axios.delete(
+    `https://api.mlab.com/api/1/databases/hyago-mymoney/collections/operations/${operation_id}?apiKey=5aPAxLXs0iXeCbUpetKBKbl5Dta11DYj`,
+  )
+    .then(response => {
+      console.log(response)
+      return true;
+    })
+    .catch(error => {
+      console.log(error)
+      return false;
+    })
+}
+
 export {
   login,
   register,
   getOperations,
-  createOperation
+  createOperation,
+  deleteOperation
 };
