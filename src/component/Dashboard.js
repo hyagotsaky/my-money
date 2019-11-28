@@ -31,21 +31,39 @@ function Dashboard() {
   const descriptionRef = useRef();
   const valueRef = useRef();
   const typeRef = useRef();
-
+ 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('mymoney-user'));
     user.initialValue = Number(user.initialValue);
     reloadOperations(user.username)
     setUser(user);
   }, [])
-
+ 
   useEffect(() => {
     calculateCurrentValue();
     if (operations.length) {
-
-      const totalValue = operations.reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }));
-      const positiveValue = operations.filter(op => op.type === 'entrada').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
-      const negativeValue = operations.filter(op => op.type === 'saida').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
+ 
+ 
+      let positiveValue, negativeValue, totalValue;
+ 
+      if (operations.length) {
+        totalValue = operations.reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }));
+      } else {
+        totalValue = 0;
+      }
+ 
+      if (operations.filter(op => op.type === 'entrada').length) {
+        positiveValue = operations.filter(op => op.type === 'entrada').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
+      } else {
+        positiveValue = 0;
+      }
+ 
+      if (operations.filter(op => op.type === 'saida').length) {
+        negativeValue = operations.filter(op => op.type === 'saida').reduce((a, b) => ({ value: Number(a.value) + Number(b.value) }))
+      } else {
+        negativeValue = 0;
+      }
+ 
       const newChartData = [
         {
           angle: (negativeValue.value / totalValue.value) * 100,
@@ -62,11 +80,11 @@ function Dashboard() {
       setChartData(newChartData)
     }
   }, [operations]);
-
+ 
   const myData = [
-
+ 
   ]
-
+ 
   async function calculateCurrentValue() {
     let computedValue = user.initialValue;
     await operations.forEach(operation => {
@@ -78,43 +96,43 @@ function Dashboard() {
     });
     setCurrentValue(computedValue);
   }
-
+ 
   function reloadOperations(username = '') {
     getOperations(username ? username : user.username)
       .then(res => {
         setOperations(res);
       })
   }
-
+ 
   function renderRedirect() {
     if (!localStorage.getItem('mymoney-user')) {
       return <Redirect to='/login' />
     }
     return null;
   }
-
+ 
   function signOut() {
     localStorage.removeItem('mymoney-user');
     setUser({});
   }
-
+ 
   const redCard = cx(
     styles.operationBox,
     styles.borderRed,
   )
-
+ 
   const greenCard = cx(
     styles.operationBox,
     styles.borderGreen,
   )
-
+ 
   async function handleDelete(id) {
     const res = await deleteOperation(id);
     if (res) {
       reloadOperations();
     }
   }
-
+ 
   function operationList() {
     return operations.map((operation, key) => {
       return (
@@ -135,7 +153,7 @@ function Dashboard() {
       )
     })
   }
-
+ 
   function validate() {
     const date = new Date();
     const payload = {
@@ -165,7 +183,7 @@ function Dashboard() {
     }
     setErrors([...newErrors]);
   }
-
+ 
   return (
     <>
       {renderRedirect()}
@@ -265,11 +283,11 @@ function Dashboard() {
           {operationList()}
         </div>
       </div>
-
-
-
+ 
+ 
+ 
     </>
   );
 };
-
+ 
 export default Dashboard;
