@@ -67,12 +67,12 @@ function Dashboard() {
       const newChartData = [
         {
           angle: (negativeValue.value / totalValue.value) * 100,
-          radius: negativeValue.value / positiveValue.value, // controla tamanho da torta
+          radius: 1, // controla tamanho da torta
           color: '#eb0000'
         },
         {
           angle: (positiveValue.value / totalValue.value) * 100,
-          radius: positiveValue.value / negativeValue.value,
+          radius: 1,
           color: '#61DA47'
         }
       ]
@@ -186,6 +186,9 @@ function Dashboard() {
  
   return (
     <>
+    <div className={styles.divMainUser}> 
+
+  
       {renderRedirect()}
       <div className={styles.welcome}>
         <FontAwesomeIcon icon={faUser} />
@@ -285,7 +288,7 @@ function Dashboard() {
       </div>
  
  
- 
+      </div>
     </>
   );
 };
